@@ -1,4 +1,25 @@
+# Terraform
+
 .terraform/
 *.tfstate
 .tfstate.
+crash.log
+
+# Environment Variables
+
+.env
+*.env
+
+# Node Modules
+
+node_modules/
+
+# Docker
+
+docker-data/
+
+# OS Files
+
+.DS_Store
+
 terraform.tfvars

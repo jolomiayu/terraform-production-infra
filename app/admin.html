@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Admin Dashboard</title>
+
+    <style>
+
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: gold;
+            font-size: 50px;
+        }
+
+        input {
+
+            display: block;
+            width: 300px;
+            margin: 15px auto;
+            padding: 12px;
+            font-size: 18px;
+        }
+
+        button {
+
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: gold;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .booking-card {
+
+            border: 1px solid white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 320px;
+            background-color: #111;
+        }
+
+        .delete-btn {
+
+            background-color: crimson;
+            color: white;
+        }
+
+        #dashboard {
+
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="login-section">
+
+        <h1>Admin Login</h1>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Admin Username"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Admin Password"
+        >
+
+        <button onclick="login()">
+            Login
+        </button>
+
+    </div>
+
+    <div id="dashboard">
+
+        <h1>Admin Dashboard</h1>
+
+        <button onclick="loadBookings()">
+            Load Bookings
+        </button>
+
+        <div id="bookings"></div>
+
+    </div>
+
+    <script>
+
+        function login() {
+
+            const username =
+                document.getElementById(
+                    'username'
+                ).value;
+
+            const password =
+                document.getElementById(
+                    'password'
+                ).value;
+
+            if (
+                username === 'admin' &&
+                password === 'jenz123'
+            ) {
+
+                document.getElementById(
+                    'login-section'
+                ).style.display = 'none';
+
+                document.getElementById(
+                    'dashboard'
+                ).style.display = 'block';
+            }
+
+            else {
+
+                alert(
+                    'Invalid admin credentials'
+                );
+            }
+        }
+
+        async function loadBookings() {
+
+            const response =
+                await fetch('/bookings');
+
+            const bookings =
+                await response.json();
+
+            let output = '';
+
+            bookings.forEach(function (booking) {
+
+                output +=
+                    '<div class="booking-card">' +
+
+                    '<h3>' +
+                    booking.customer_name +
+                    '</h3>' +
+
+                    '<p>Service: ' +
+                    booking.service +
+                    '</p>' +
+
+                    '<p>Status: ' +
+                    booking.status +
+                    '</p>' +
+
+                    '<button class="delete-btn" onclick="deleteBooking(' +
+                    booking.id +
+                    ')">Delete</button>' +
+
+                    '</div>';
+            });
+
+            document.getElementById(
+                'bookings'
+            ).innerHTML = output;
+        }
+
+        async function deleteBooking(id) {
+
+            await fetch(
+                '/bookings/' + id,
+                {
+                    method: 'DELETE'
+                }
+            );
+
+            loadBookings();
+        }
+
+    </script>
+
+</body>
+
+</html>

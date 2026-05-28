@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Jenz Salon Booking Platform
+    </title>
+
+    <style>
+
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: gold;
+            font-size: 50px;
+        }
+
+        input,
+        select {
+            display: block;
+            width: 300px;
+            margin: 15px auto;
+            padding: 12px;
+            font-size: 18px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: gold;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #message {
+            margin-top: 20px;
+            color: lightgreen;
+            font-size: 22px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>
+        Jenz Salon Booking Platform
+    </h1>
+
+    <h2>
+        Cloud Powered Beauty Services
+    </h2>
+
+    <form id="bookingForm">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Customer Name"
+            required
+        >
+
+        <select id="service" required>
+
+            <option value="">
+                Select Service
+            </option>
+
+            <option value="Hair Cut">
+                Hair Cut
+            </option>
+
+            <option value="Braiding">
+                Braiding
+            </option>
+
+            <option value="Pedicure">
+                Pedicure
+            </option>
+
+            <option value="Manicure">
+                Manicure
+            </option>
+
+            <option value="Hair Coloring">
+                Hair Coloring
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Book Appointment
+        </button>
+
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+
+        const form =
+            document.getElementById('bookingForm');
+
+        form.addEventListener('submit', async function (e) {
+
+            e.preventDefault();
+
+            const booking = {
+
+                customer_name:
+                    document.getElementById('name').value,
+
+                service:
+                    document.getElementById('service').value,
+
+                appointment_date: null
+            };
+
+            const response =
+                await fetch('/bookings', {
+
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify(booking)
+                });
+
+            const data =
+                await response.json();
+
+            document.getElementById('message').innerText =
+                data.message;
+
+        });
+
+    </script>
+
+</body>
+
+</html>
